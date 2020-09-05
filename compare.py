@@ -1492,7 +1492,20 @@ class sever():
             # print(i)
             # for k in self.dict[i]:
             #     print(k)
+            else:
+                listall = []
+                actid = self.dict[i][2][0]
+                actidz = self.dict[i][2][0]
+                actname = self.dict[i][0][0]
+                acttime = self.dict[i][5][2]
+                acttimec = self.dict[i][5][3]
+                listt = [actid, actname, acttime, acttimec]  # ['1588058523', '充值有礼', '2020-5-18 0:0:0', '604799']
+                list_aa=['没写解析方式','何小玲赶紧补上']
+                listall.append(listt)
+                listall.append(list_aa)
+                self.dict[i] = listall
             self.dict_final[self.dict[i][0][0]] = self.dict[i]
+
         return self.dict_final
 
 class Time():
@@ -1571,7 +1584,6 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
         page=self.ui.l_ename.text()
         if page=='':
             page='Sheet3'
-        print(1)
         urln=dict_sAdress[self.ui.comboBox.currentText()]
         time=self.ui.calendarWidget.selectedDate()
         ddd=str(time).split('(')[1].split(')')[0].split(',')
@@ -1579,7 +1591,6 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
         print(aaa)
         Time(urln,'3',aaa).time()
         self.ui.pushButton.setText(aaa)
-        print(1111)
         self.excel = sever(urln,self.openfile_iteam[0],self.openfile_card[0]).jx_huodong()
         # sever(urln,self.openfile_iteam,self.openfile_card).get_activ()
         # sever(urln,self.openfile_iteam,self.openfile_card).j_activ()
