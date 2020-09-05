@@ -10,6 +10,7 @@ import sys
 import requests
 import urllib3
 import selenium
+# pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
 from bs4 import BeautifulSoup
 from time import sleep
 import random
@@ -694,6 +695,7 @@ class sever():
                     # print(self.d_iteam['role_money'])
                     self.liste.append(jianglia[a][0])
                     self.liste.append(jianglia[a][1])
+        return self.liste
 
     #从服务器获取当前的所有活动
     def get_activ(self):  # 从服务器获取现在开启的所有活动
@@ -799,7 +801,9 @@ class sever():
                             charge = activ_j[1].split(',')[1].split('}')[0] + '0'
                             liste.append(charge)
                             liste.append(day)
+                        print(activ_j[3])
                         jiangli = self.jiangli_j(activ_j[3], 0)
+                        print(jiangli)
                         for k in jiangli:
                             liste.append(k)
                         listc.append(liste)
@@ -826,7 +830,9 @@ class sever():
                         else:  # 读取奖励的充值金额
                             charge = activ_j[0] + '0'
                             listjx.append(charge)
+                        print(33)
                         listjl = self.jiangli_j(activ_j[2], 0)
+                        print(listjl)
                         for k in listjl:
                             listjx.append(k)
                         listez.append(listjx)
@@ -1487,6 +1493,7 @@ class sever():
             # for k in self.dict[i]:
             #     print(k)
             self.dict_final[self.dict[i][0][0]] = self.dict[i]
+        return self.dict_final
 
 class Time():
     def __init__(self,url,types,datein):
@@ -1506,7 +1513,7 @@ class Time():
 
         }
         r = requests.post(url, data)
-        return r
+        return r.text
 
 class ui_compare(QMainWindow,activ.Ui_MainWindow):
     def __init__(self):
@@ -1564,17 +1571,20 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
         page=self.ui.l_ename.text()
         if page=='':
             page='Sheet3'
-        self.excel = execle(self.openfile_name[0]).chuli_activ()
+        print(1)
         urln=dict_sAdress[self.ui.comboBox.currentText()]
         time=self.ui.calendarWidget.selectedDate()
         ddd=str(time).split('(')[1].split(')')[0].split(',')
-        aaa=ddd[0]+'-'+ddd[1]+'-'+ddd[2]+'+12%3a00%3a00'
-        Time(urln,'3',time).time()
+        aaa='2020-09-05 12:00:00'
+        print(aaa)
+        Time(urln,'3',aaa).time()
         self.ui.pushButton.setText(aaa)
+        print(1111)
+        self.excel = sever(urln,self.openfile_iteam[0],self.openfile_card[0]).jx_huodong()
         # sever(urln,self.openfile_iteam,self.openfile_card).get_activ()
         # sever(urln,self.openfile_iteam,self.openfile_card).j_activ()
         # self.sever=sever(urln,self.openfile_iteam,self.openfile_card).jx_huodong()
-        self.sever= execle(self.openfile_name[0],page).chuli_activ()
+        self.sever= sever(urln,self.openfile_iteam[0],self.openfile_card[0]).jx_huodong()
         self.model_2 = QStandardItemModel(3,8)
         self.ui.excel_2.setModel(self.model_2)
         self.model_1 = QStandardItemModel(3, 8)
